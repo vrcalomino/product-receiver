@@ -1,4 +1,4 @@
-package com.receiver.product;
+package com.request.product;
 
 import io.github.cdimascio.dotenv.Dotenv;
 import org.springframework.boot.SpringApplication;
