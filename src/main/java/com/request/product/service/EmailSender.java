@@ -1,5 +1,6 @@
 package com.request.product.service;
 
+import com.request.product.config.Config;
 import com.request.product.model.Product;
 import io.github.cdimascio.dotenv.Dotenv;
 import org.springframework.stereotype.Service;
@@ -15,8 +16,7 @@ import java.util.Properties;
 @Service
 public class EmailSender {
 
-    public void sendEmail(String receiver, String host, Product product) {
-        Dotenv dotenv = Dotenv.configure().load();
+    public void sendEmail(String receiver, String host, Product product) throws MessagingException {
 
         Properties properties = System.getProperties();
         properties.put("mail.smtp.host", host);
@@ -24,8 +24,9 @@ public class EmailSender {
         properties.put("mail.smtp.auth", true);
         properties.put("mail.smtp.starttls.enable", true);
 
-        String sender = Objects.requireNonNull(dotenv.get("EMAIL_SENDER"));
-        String password = Objects.requireNonNull(dotenv.get("EMAIL_SENDER_PASSWORD"));
+        Config config = new Config();
+        String sender = config.getEmail();
+        String password = config.getPassword();
 
         Session session = Session.getInstance(properties, new Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
@@ -33,9 +34,7 @@ public class EmailSender {
             }
         });
 
-        session.setDebug(true);
 
-        try {
             MimeMessage message = new MimeMessage(session);
 
             message.setFrom(new InternetAddress(sender));
@@ -59,8 +58,5 @@ public class EmailSender {
             message.setContent(multipart);
 
             Transport.send(message);
-        } catch (MessagingException exception) {
-            System.out.println(exception.getMessage());
-        }
     }
 }
