@@ -3,14 +3,11 @@ package com.request.product.config;
 import io.github.cdimascio.dotenv.Dotenv;
 import lombok.Getter;
 
-import java.util.Objects;
-
+@Getter
 public class Config {
 
-    @Getter
-    private String email;
-    @Getter
-    private String password;
+    private final String email;
+    private final String password;
 
     public Config(){
         Dotenv dotenv = Dotenv.configure().load();

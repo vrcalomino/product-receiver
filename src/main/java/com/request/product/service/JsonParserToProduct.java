@@ -10,8 +10,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class JsonParserToProduct {
 
-    public Product ParseToProduct(String jsonString) {
-        try {
+    public Product ParseToProduct(String jsonString) throws Exception {
+        if (jsonString == null) {
+            throw new Exception("No json string provided");
+        }
             ObjectMapper objectMapper = new ObjectMapper();
 
             JsonNode rootNode = objectMapper.readTree(jsonString);
@@ -22,8 +24,6 @@ public class JsonParserToProduct {
             String image = rootNode.path("image").asText();
 
             return new Product(title, price, description, image);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
+
     }
 }

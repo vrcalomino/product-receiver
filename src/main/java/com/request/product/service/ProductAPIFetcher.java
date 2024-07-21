@@ -13,19 +13,17 @@ public class ProductAPIFetcher {
 
     private final String baseUrl = "https://fakestoreapi.com/products";
 
-    public String fetchSingleProduct(Long product_id) {
-        try {
-            HttpClient client = HttpClient.newHttpClient();
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(new URI(baseUrl + "/" + product_id))
-                    .GET()
-                    .header("Accept", "application/json")
-                    .build();
-
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            return response.body();
-        } catch (URISyntaxException | IOException | InterruptedException e) {
-            throw new RuntimeException(e);
+    public String fetchSingleProduct(Long product_id) throws Exception {
+        if (product_id == null) {
+            throw new Exception("Missing product id");
         }
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(new URI(baseUrl + "/" + product_id))
+                .GET()
+                .header("Accept", "application/json")
+                .build();
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        return response.body();
     }
 }
