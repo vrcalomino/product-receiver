@@ -6,7 +6,7 @@ This one consumes the queue and sends an email with the requested information.
 
 ## Run the project!
 
-I'd recommend running the whole project following the instructions of the Readme. 
+I'd recommend running the whole project following the instructions of the main Readme. 
 However, you can run this service alone.
 
 First you need to create an .env file with these credentials:
@@ -35,7 +35,7 @@ I'll leave you steps to run the project manually:
 - Run `docker build -t <image_name> .`
 - Then run `docker run <image_name>`
 
-### Important: this project doesn't have much sense without the other service.
+### Important: this project will run but do nothing without a rabbitmq valid connection.
 
 #### Technologies:
 
