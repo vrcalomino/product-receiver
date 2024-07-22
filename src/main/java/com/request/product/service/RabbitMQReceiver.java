@@ -22,15 +22,16 @@ public class RabbitMQReceiver {
     }
 
     @RabbitListener(queues = RabbitMQConfig.QUEUE_NAME, containerFactory = "rabbitListenerContainerFactory")
-    public void receive(RequestInformation productRequest) throws Exception {
+    public void receive(RequestInformation productRequest) {
         if (productRequest == null) {
-            throw new Exception("No request information");
+            System.out.println("Missing product request");
+            return;
         }
-        String productInfo = productAPIFetcher.fetchSingleProduct(productRequest.getProduct_id());
-        Product product = parser.ParseToProduct(productInfo);
         try {
+            String productInfo = productAPIFetcher.fetchSingleProduct(productRequest.getProduct_id());
+            Product product = parser.ParseToProduct(productInfo);
             emailSender.sendEmail(productRequest.getEmail(), "smtp.gmail.com", product);
-        } catch (MessagingException e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
